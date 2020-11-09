@@ -116,7 +116,7 @@ public class PdfCanvasParser {
             ls.add(ob);
             if (tokeniser.getTokenType() == PdfTokenizer.TokenType.Other) {
                 if ("BI".equals(ob.toString())) {
-                    PdfStream inlineImageAsStream = InlineImageParsingUtils.parse(this, currentResources.getResource(PdfName.ColorSpace));
+                    PdfStream inlineImageAsStream = currentResources == null ? InlineImageParsingUtils.parse(this, null) : InlineImageParsingUtils.parse(this, currentResources.getResource(PdfName.ColorSpace));
                     ls.clear();
                     ls.add(inlineImageAsStream);
                     ls.add(new PdfLiteral("EI"));
