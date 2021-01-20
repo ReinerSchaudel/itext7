@@ -69,6 +69,14 @@
     <url>https://jenkins.itextsupport.com/</url>
   </ciManagement>
 
+  <distributionManagement>
+    <repository>
+      <id>thirdparty</id>
+      <name>Thirdparty used by MacrosReply</name>
+      <url>http://nexus.macrosreply.de/nexus/repository/thirdparty/</url>
+    </repository>
+  </distributionManagement>
+
   <properties>
     <argLine>-Xmx1024m</argLine>
     <bouncycastle.version>1.67</bouncycastle.version>
