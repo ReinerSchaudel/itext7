@@ -237,14 +237,19 @@ public class PdfA2Checker extends PdfA1Checker {
             }
             //TODO DEVSIX-4203 Fix IndexOutOfBounds exception being thrown for DeviceN (not NChannel) colorspace without
             // attributes. According to the spec PdfAConformanceException should be thrown.
-            PdfDictionary attributes = ((PdfArray) deviceN.getPdfObject()).getAsDictionary(4);
-            PdfDictionary colorants = attributes.getAsDictionary(PdfName.Colorants);
-            //TODO DEVSIX-4203 Colorants dictionary is mandatory in PDF/A-2 spec. Need to throw an appropriate exception
-            // if it is not present.
-            if (colorants != null) {
-                for (Map.Entry<PdfName, PdfObject> entry : colorants.entrySet()) {
-                    PdfArray separation = (PdfArray) entry.getValue();
-                    checkSeparationInsideDeviceN(separation, ((PdfArray) deviceN.getPdfObject()).get(2), ((PdfArray) deviceN.getPdfObject()).get(3));
+            PdfArray deviceNPdfObject = (PdfArray) deviceN.getPdfObject();
+            if (deviceNPdfObject.size() < 5) {
+                throw new PdfAConformanceException("Colorants dictionary is mandatory in PDF/A-2");
+            } else {
+                PdfDictionary attributes = deviceNPdfObject.getAsDictionary(4);
+                PdfDictionary colorants = attributes.getAsDictionary(PdfName.Colorants);
+                //TODO DEVSIX-4203 Colorants dictionary is mandatory in PDF/A-2 spec. Need to throw an appropriate exception
+                // if it is not present.
+                if (colorants != null) {
+                    for (Map.Entry<PdfName, PdfObject> entry : colorants.entrySet()) {
+                        PdfArray separation = (PdfArray) entry.getValue();
+                        checkSeparationInsideDeviceN(separation, deviceNPdfObject.get(2), deviceNPdfObject.get(3));
+                    }
                 }
             }
 
